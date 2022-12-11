@@ -7,18 +7,26 @@ using namespace Windows::Foundation;
 using namespace Windows::Web::Http;
 
 const std::wstring CHECKIP_URL = L"https://checkip.amazonaws.com";
-//const std::wstring VERSION = L"0.1.0";
 bool debug = false;
 
-hstring CheckIP(std::wstring url) {
+std::string trim(std::string s) {
+    constexpr const char* whitespace{ " \t\r\n\v\f" };
+    if (s.empty()) return s;
+    const auto first{ s.find_first_not_of(whitespace) };
+    if (first == std::string::npos) return {};
+    const auto last{ s.find_last_not_of(whitespace) };
+    return s.substr(first, (last - first + 1));
+}
+
+std::string CheckIP(std::wstring url) {
     Uri checkipUri{ url };
     HttpClient httpClient{};
     auto headers{ httpClient.DefaultRequestHeaders() };
 
     std::wstring useragent = std::format(L"checkip/{0}", VER_PRODUCTVERSION_STR);
     if (url == L"https://ifconfig.co") {
-        // https://ifconfig.co requires a specific user agent otherwise 
-        // it expects displaying HTML for a browser
+        // https://ifconfig.co requires a specific user agent
+        // otherwise it returns HTML to render in a browser
         useragent = std::format(L"curl/{0}", VER_PRODUCTVERSION_STR);
     }
     if (debug) {
@@ -28,10 +36,11 @@ hstring CheckIP(std::wstring url) {
     headers.UserAgent().TryParseAdd(useragent);
     HttpGetStringResult result = httpClient.TryGetStringAsync(checkipUri).get();
     if (result.Succeeded()) {
-        return result.Value();
+        return trim(to_string(result.Value()));
     }
-    std::wcerr << result.ToString().c_str() << std::endl;
-    return hstring();
+    // Error
+    std::wcerr << red << result.ToString().c_str() << deftextcol << std::endl;
+    return to_string(hstring());
 }
 
 static std::wstring getPath(char* path) {
@@ -88,6 +97,6 @@ int main(int argc, char* argv[] /*, char* envp[] */) {
         }
     }
     
-    hstring ipaddress = CheckIP(checkIpUrl);
+    auto ipaddress = CheckIP(checkIpUrl);
     std::wcout << green << ipaddress.c_str() << deftextcol << std::endl;
 }

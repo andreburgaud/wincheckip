@@ -1,5 +1,5 @@
-#define VER_FILEVERSION_STR      "0.3.0"
-#define VER_PRODUCTVERSION_STR   L"0.3.0"
+#define VER_FILEVERSION_STR      "0.4.0"
+#define VER_PRODUCTVERSION_STR   L"0.4.0"
 
 #define VER_COMPANYNAME_STR      "Burgaud.com"
 #define VER_FILEDESCRIPTION_STR  "Display machine external IP address"
