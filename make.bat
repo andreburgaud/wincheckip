@@ -1,6 +1,6 @@
 @echo off
 
-set VERSION="0.3.0"
+set VERSION="0.4.0"
 
 if {%1} == {} (
     goto USAGE
@@ -46,10 +46,8 @@ goto :EOF
 
 :DIST
 mkdir dist
-upx x64/release/wincheckip.exe
 powershell -Command "Compress-Archive -Path 'x64/release/wincheckip.exe' -DestinationPath 'dist/wincheckip_x64_%VERSION%.zip'"
 goto :EOF
-
 
 :USAGE
 echo.
