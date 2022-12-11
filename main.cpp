@@ -15,7 +15,7 @@ hstring CheckIP(std::wstring url) {
     HttpClient httpClient{};
     auto headers{ httpClient.DefaultRequestHeaders() };
 
-    std::wstring useragent = std::format(L"checkip/1.2.3", VER_PRODUCTVERSION_STR);
+    std::wstring useragent = std::format(L"checkip/{0}", VER_PRODUCTVERSION_STR);
     if (url == L"https://ifconfig.co") {
         // https://ifconfig.co requires a specific user agent otherwise 
         // it expects displaying HTML for a browser

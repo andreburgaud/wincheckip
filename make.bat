@@ -1,6 +1,6 @@
 @echo off
 
-set VERSION="0.2.0"
+set VERSION="0.3.0"
 
 if {%1} == {} (
     goto USAGE
