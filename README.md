@@ -48,3 +48,9 @@ Add option `--debug` or `-d` to make the output more verbose.
 ```
 > wincheckip --version
 ```
+
+## License
+
+The Wincheckip code is published under the MIT license (see LICENSE file in the project).
+
+The source code also include `color.h` based on https://cplusplus.com/articles/Eyhv0pDG/ which is published under an MIT license.
