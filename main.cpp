@@ -5,11 +5,12 @@
 using namespace winrt;
 using namespace Windows::Foundation;
 using namespace Windows::Web::Http;
+using namespace color;
 
 const std::wstring CHECKIP_URL = L"https://checkip.amazonaws.com";
 bool debug = false;
 
-std::string trim(std::string s) {
+inline std::string trim(const std::string& s) {
     constexpr const char* whitespace{ " \t\r\n\v\f" };
     if (s.empty()) return s;
     const auto first{ s.find_first_not_of(whitespace) };
@@ -18,7 +19,7 @@ std::string trim(std::string s) {
     return s.substr(first, (last - first + 1));
 }
 
-std::string CheckIP(std::wstring url) {
+std::string checkIP(const std::wstring& url) {
     Uri checkipUri{ url };
     HttpClient httpClient{};
     auto headers{ httpClient.DefaultRequestHeaders() };
@@ -43,12 +44,12 @@ std::string CheckIP(std::wstring url) {
     return to_string(hstring());
 }
 
-static std::wstring getPath(char* path) {
+std::wstring getPath(char* path) {
     auto p = std::filesystem::path{ path };
     return p.stem().wstring();
 }
 
-static void showUsage(std::wstring path) {
+void showUsage(std::wstring path) {
     std::wcerr << yellow << "Usage:\n" << deftextcol
         << "\t" << path << " [OPTIONS] [URL]\n"
         << yellow << "Options:\n" << deftextcol
@@ -59,7 +60,7 @@ static void showUsage(std::wstring path) {
         << std::endl;
 }
 
-static void showVersion(std::wstring path, std::wstring version) {
+void showVersion(std::wstring path, std::wstring version) {
     std::wcerr << yellow << path << " " << version << deftextcol << std::endl;
 }
 
@@ -97,6 +98,6 @@ int main(int argc, char* argv[] /*, char* envp[] */) {
         }
     }
     
-    auto ipaddress = CheckIP(checkIpUrl);
+    auto ipaddress = checkIP(checkIpUrl);
     std::wcout << green << ipaddress.c_str() << deftextcol << std::endl;
 }

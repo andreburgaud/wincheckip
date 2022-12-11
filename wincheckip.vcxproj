@@ -106,7 +106,6 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
