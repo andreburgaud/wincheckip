@@ -8,9 +8,12 @@ using namespace Windows::Web::Http;
 using namespace color;
 
 const std::wstring CHECKIP_URL = L"https://checkip.amazonaws.com";
-bool debug = false;
 
-auto inline trim(const std::string& s) -> std::string {
+namespace checkip {
+    bool debug = false;
+}
+
+std::string inline trim(const std::string& s) {
     constexpr const char* whitespace{ " \t\r\n\v\f" };
     if (s.empty()) return s;
     const auto first{ s.find_first_not_of(whitespace) };
@@ -19,7 +22,7 @@ auto inline trim(const std::string& s) -> std::string {
     return s.substr(first, (last - first + 1));
 }
 
-auto checkIP(const std::wstring& url) {
+std::string checkIP(const std::wstring& url) {
     Uri checkipUri{ url };
     HttpClient httpClient{};
     auto headers{ httpClient.DefaultRequestHeaders() };
@@ -30,7 +33,7 @@ auto checkIP(const std::wstring& url) {
         // otherwise it returns HTML to render in a browser
         useragent = std::format(L"curl/{0}", VER_PRODUCTVERSION_STR);
     }
-    if (debug) {
+    if (checkip::debug) {
         std::wcerr << ">>> url: " << url << std::endl;
         std::wcerr << ">>> user agent: " << useragent << std::endl;
     }
@@ -44,7 +47,7 @@ auto checkIP(const std::wstring& url) {
     return to_string(hstring());
 }
 
-auto getPath(const char* path) -> std::wstring {
+std::wstring getPath(const char* path) {
     auto p = std::filesystem::path{ path };
     return p.stem().wstring();
 }
@@ -70,12 +73,12 @@ std::string toLower(std::string s) {
     return s;
 }
 
-auto main(int argc, char* argv[] /*, char* envp[] */) -> int {
+int main(int argc, char* argv[] /*, char* envp[] */) {
     init_apartment();
-    std::vector <std::string> args;
+    std::vector <std::string> args{};
     std::wstring checkIpUrl{ CHECKIP_URL.c_str() };
 
-    concolinit();
+    color::concolinit();
 
     for (int i = 1; i < argc; i++) {
         std::string arg{ toLower(argv[i]) };
@@ -89,7 +92,7 @@ auto main(int argc, char* argv[] /*, char* envp[] */) -> int {
             return 0;
         }
         if ((arg == "-d") || (arg == "--debug")) {
-            debug = true;
+            checkip::debug = true;
             continue;
         }
         if ((arg == "-u") || (arg == "--url")) {
