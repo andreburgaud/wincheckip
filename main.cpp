@@ -10,7 +10,7 @@ using namespace color;
 const std::wstring CHECKIP_URL = L"https://checkip.amazonaws.com";
 bool debug = false;
 
-inline std::string trim(const std::string& s) {
+auto inline trim(const std::string& s) -> std::string {
     constexpr const char* whitespace{ " \t\r\n\v\f" };
     if (s.empty()) return s;
     const auto first{ s.find_first_not_of(whitespace) };
@@ -19,12 +19,12 @@ inline std::string trim(const std::string& s) {
     return s.substr(first, (last - first + 1));
 }
 
-std::string checkIP(const std::wstring& url) {
+auto checkIP(const std::wstring& url) {
     Uri checkipUri{ url };
     HttpClient httpClient{};
     auto headers{ httpClient.DefaultRequestHeaders() };
 
-    std::wstring useragent = std::format(L"checkip/{0}", VER_PRODUCTVERSION_STR);
+    std::wstring useragent{ std::format(L"checkip/{0}", VER_PRODUCTVERSION_STR) };
     if (url == L"https://ifconfig.co") {
         // https://ifconfig.co requires a specific user agent
         // otherwise it returns HTML to render in a browser
@@ -44,7 +44,7 @@ std::string checkIP(const std::wstring& url) {
     return to_string(hstring());
 }
 
-std::wstring getPath(char* path) {
+auto getPath(const char* path) -> std::wstring {
     auto p = std::filesystem::path{ path };
     return p.stem().wstring();
 }
@@ -60,7 +60,7 @@ void showUsage(std::wstring path) {
         << std::endl;
 }
 
-void showVersion(std::wstring path, std::wstring version) {
+void showVersion(const std::wstring path, const std::wstring version) {
     std::wcerr << yellow << path << " " << version << deftextcol << std::endl;
 }
 
@@ -70,15 +70,15 @@ std::string toLower(std::string s) {
     return s;
 }
 
-int main(int argc, char* argv[] /*, char* envp[] */) {
+auto main(int argc, char* argv[] /*, char* envp[] */) -> int {
     init_apartment();
     std::vector <std::string> args;
-    std::wstring checkIpUrl = CHECKIP_URL.c_str();
+    std::wstring checkIpUrl{ CHECKIP_URL.c_str() };
 
     concolinit();
 
     for (int i = 1; i < argc; i++) {
-        std::string arg = toLower(argv[i]);
+        std::string arg{ toLower(argv[i]) };
 
         if ((arg == "-h") || (arg == "/?") || (arg == "--help")) {
             showUsage(getPath(argv[0]));
@@ -93,7 +93,7 @@ int main(int argc, char* argv[] /*, char* envp[] */) {
             continue;
         }
         if ((arg == "-u") || (arg == "--url")) {
-            std::string u = argv[i + 1];
+            std::string u{ argv[i + 1] };
             checkIpUrl = std::wstring(u.begin(), u.end());
         }
     }

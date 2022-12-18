@@ -8,8 +8,8 @@ Header file to color text and background in windows console applications
 Global variables - textcol,backcol,deftextcol,defbackcol,colorprotect
 */
 
-#include<windows.h>
 #include<iosfwd>
+#include<Windows.h>
 
 namespace color {
 
@@ -35,9 +35,9 @@ namespace color {
     HANDLE std_con_out;
 
     //Standard Output Handle
-    bool colorprotect = false;
+    const bool colorprotect = false;
 
-    //If colorprotect is true, background and text colors will never be the same
+    // If colorprotect is true, background and text colors will never be the same
     concol textcol, backcol, deftextcol, defbackcol;
 
     /*
@@ -54,24 +54,24 @@ namespace color {
         backcol = concol((csbi.wAttributes & 0xf0) >> 4);
     }
 
-    inline void setcolor(concol textcolor, concol backcolor) {
-        if (colorprotect && textcolor == backcolor)return;
+    inline void setcolor(const concol textcolor, const concol backcolor) {
+        if constexpr (colorprotect && textcolor == backcolor) return;
         textcol = textcolor; backcol = backcolor;
-        unsigned short wAttributes = ((unsigned short)backcol << 4) | (unsigned short)textcol;
+        unsigned short wAttributes = ((uint16_t)backcol << 4) | (uint16_t)textcol;
         SetConsoleTextAttribute(std_con_out, wAttributes);
     }
 
-    inline void settextcolor(concol textcolor) {
-        if (colorprotect && textcolor == backcol)return;
+    inline void settextcolor(const concol textcolor) {
+        if constexpr (colorprotect && textcolor == backcol) return;
         textcol = textcolor;
-        unsigned short wAttributes = ((unsigned short)backcol << 4) | (unsigned short)textcol;
+        unsigned short wAttributes = ((uint16_t)backcol << 4) | (uint16_t)textcol;
         SetConsoleTextAttribute(std_con_out, wAttributes);
     }
 
-    inline void setbackcolor(concol backcolor) {
-        if (colorprotect && textcol == backcolor)return;
+    inline void setbackcolor(const concol backcolor) {
+        if constexpr (colorprotect && textcol == backcolor) return;
         backcol = backcolor;
-        unsigned short wAttributes = ((unsigned short)backcol << 4) | (unsigned short)textcol;
+        unsigned short wAttributes = ((uint16_t)backcol << 4) | (uint16_t)textcol;
         SetConsoleTextAttribute(std_con_out, wAttributes);
     }
 

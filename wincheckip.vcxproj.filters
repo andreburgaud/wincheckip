@@ -46,6 +46,9 @@
     <None Include="make.bat">
       <Filter>Source Files</Filter>
     </None>
+    <None Include=".clang-tidy">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="wincheckip.rc">

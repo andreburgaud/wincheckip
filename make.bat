@@ -59,3 +59,4 @@ echo.
 echo make clean         Removed generated files
 echo make build         Build debug and release targets
 echo make release       Rebuild project and generate release target
+echo make dist          Create a zip package

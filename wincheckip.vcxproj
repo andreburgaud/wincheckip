@@ -115,6 +115,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-tidy" />
     <None Include="LICENSE" />
     <None Include="make.bat" />
     <None Include="packages.config" />
